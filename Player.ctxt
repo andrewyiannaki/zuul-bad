@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.params=playerName\ playerAge\ playerCarryLimit\ currentRoom
+comment0.target=Player(java.lang.String,\ int,\ double,\ Room)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Player\r\n
+comment1.params=item
+comment1.target=void\ takeItem(Item)
+comment1.text=\r\n\ takeItem.\ Enables\ a\ player\ to\ take\ an\ item\r\n\ \r\n\ @param\ Item.\ An\ item\ object\r\n
+comment2.params=arrayIndex
+comment2.target=void\ dropItem(int)
+comment2.text=\r\n\ dropItem.\ Enables\ a\ player\ to\ drop\ an\ item\r\n\ \r\n
+comment3.params=newItem
+comment3.target=boolean\ checkNewWeight(Item)
+numComments=4
