@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.params=taskName\ taskTimeLimit\ taskDescription
+comment0.target=Task(java.lang.String,\ int,\ java.lang.String)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Task\r\n
+comment1.params=
+comment1.target=java.lang.String\ getTaskName()
+comment1.text=\r\n\ getTaskName.\ Return\ the\ task\ name\r\n\ \r\n\ @return\ String\ \ taskName\r\n
+comment2.params=
+comment2.target=int\ getTaskTimeLimit()
+comment2.text=\r\n\ getTaskTimeLimit.\ Return\ the\ task\ time\ limit\r\n\ \r\n\ @return\ int\ \ taskTimeLimit\r\n
+comment3.params=
+comment3.target=java.lang.String\ getTaskDescription()
+comment3.text=\r\n\ getTaskDescription.\ Return\ the\ task\ description\r\n\ \r\n\ @return\ String\ \ taskDescription\r\n
+comment4.params=
+comment4.target=boolean\ getTaskCompleted()
+comment4.text=\r\n\ getTaskCompleted.\ Return\ the\ flag\ to\ indicate\ if\ the\ task\ has\ been\ completed\r\n\ \r\n\ @return\ boolean\ \ taskCompleted\r\n
+comment5.params=
+comment5.target=boolean\ getTaskInProgress()
+comment5.text=\r\n\ getTaskInProgress.\ Return\ the\ flag\ to\ indicate\ if\ the\ task\ is\ in\ progress\r\n\ \r\n\ @return\ boolean\ \ taskInProgress\r\n
+numComments=6

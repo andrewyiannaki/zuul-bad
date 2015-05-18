@@ -19,6 +19,8 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private Task roomTask;
+    private boolean roomLocked;
 
     /**
      * Create a room described "description". Initially, it has
@@ -26,10 +28,14 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description, Task roomTask) 
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        
+        this.roomTask = roomTask;
+        //any room is unlocked when the game is set up
+        roomLocked = false;
     }
 
     /**
@@ -86,6 +92,36 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    /**
+     * getTask. Returns the Task object
+     * 
+     * @return Task roomTask
+     */
+    public Task getTask()
+    {
+        return roomTask;
+    }
+    
+    /**
+     * getRoomLocked. Get the value of the flag that says if the room is locked or not
+     * 
+     * @return boolean roomLocked
+     */
+    public boolean getRoomLocked()
+    {
+        return roomLocked;
+    }
+    
+    /**
+     * setRoomLocked. Sets the value of the flag that says if the room is locked or not
+     * 
+     * @param boolean roomLocked
+     */
+    public void setRoomLocked(boolean roomLocked)
+    {
+        this.roomLocked = roomLocked;
     }
 }
 

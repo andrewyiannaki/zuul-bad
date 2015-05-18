@@ -14,15 +14,13 @@ import java.util.*;
  *  executes the commands that the parser returns.
  * 
  * @author  Andrew Yiannaki
- * @version 2011.08.08
+ * @version v1.0 15.05.2015
  */
 
 public class Game 
 {
     private Parser parser;
     private Room currentRoom;
-    //field to hold the previous room where the player has just been
-    private Room previousRoom;
     private Stack<Room> roomHistory;
     
         
@@ -33,7 +31,6 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        
         roomHistory = new Stack<Room>();
     }
 
@@ -45,11 +42,11 @@ public class Game
         Room outside, theater, pub, lab, office;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        outside = new Room("outside the main entrance of the university", new Task("Addition", 20, "Add 34 to 74"));
+        theater = new Room("in a lecture theater", new Task("Subtraction", 20, "Subtract 102 from 274"));
+        pub = new Room("in the campus pub", new Task("Multiplication", 20, "Multiply 72 * 7"));
+        lab = new Room("in a computing lab", new Task("Division", 20, "Divide 81 by 9"));
+        office = new Room("in the computing admin office", null);
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -66,6 +63,14 @@ public class Game
         office.setExit("west", lab);
 
         currentRoom = outside;  // start game outside
+    }
+    
+    /**
+     * Create tasks for all the room
+     */
+    private void createTasks()
+    {
+        
     }
 
     /**
@@ -98,7 +103,7 @@ public class Game
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
-
+    
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
@@ -108,25 +113,33 @@ public class Game
     {
         boolean wantToQuit = false;
 
-        if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
+        CommandWord commandWord = command.getCommandWord();
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
+        switch (commandWord) {
+            case UNKNOWN:
+                System.out.println("I don't know what you mean...");
+                break;
+
+            case HELP:
+                printHelp();
+                break;
+
+            case GO:
+                goRoom(command);
+                break;
+                
+            case BACK:
+                goBack(command);
+                break;
+                
+            case ACCEPT:
+                acceptTask();
+                break;
+
+            case QUIT:
+                wantToQuit = quit(command);
+                break;
         }
-        else if (commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if (commandWord.equals("back")) {
-            goBack(command);
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
-        // else command not recognised.
         return wantToQuit;
     }
 
@@ -158,6 +171,13 @@ public class Game
             System.out.println("Go where?");
             return;
         }
+        
+        //check if the room is locked.  If it is, print message and return out of the function
+        if (currentRoom.getRoomLocked())
+        {
+            System.out.println("This room is locked. You cant get out at this time.");
+            return;
+        }
    
 
         String direction = command.getSecondWord();
@@ -170,11 +190,9 @@ public class Game
         }
         else {
             roomHistory.push(currentRoom);
-            
-            currentRoom = nextRoom;
+          
+            enterRoom(nextRoom);
         }
-
-        System.out.println(currentRoom.getLongDescription());
     }
     
     
@@ -192,12 +210,32 @@ public class Game
         }
         else
         {
-            currentRoom = roomHistory.pop();
+            Room previousRoom = (Room) roomHistory.pop();
+            enterRoom(previousRoom);
         }
-        
-        
+    }
+    
+    /**
+     * Enters the specified room and prints the description.
+     */
+    private void enterRoom(Room nextRoom) {
+        currentRoom = nextRoom;
         System.out.println(currentRoom.getLongDescription());
         
+        //check if the room has a task. If it has ask the user if they want to accept it.
+        //if they say yes, they must complete the task in time allowed.
+        if (currentRoom.getTask() != null) {
+            System.out.println("There is a " + currentRoom.getTask().getTaskName() + " task. Do you wish to accept this task?");
+        }
+        
+    }
+    
+    /**
+     * acceptTask. Sets the parameters in the event of task being accepted.
+     * i.e. lock the door, start the timer.
+     */
+    private void acceptTask()
+    {
         
     }
 
