@@ -35,6 +35,8 @@ public class Parser
      */
     public Command getCommand() 
     {
+        //add file output
+        
         String inputLine;   // will hold the full input line
         String word1 = null;
         String word2 = null;
