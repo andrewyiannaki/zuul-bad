@@ -1,4 +1,3 @@
-import java.util.Set;
 import java.util.HashMap;
 
 /**
@@ -8,19 +7,25 @@ import java.util.HashMap;
  * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
- * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room.
+ * connected to other rooms via exits.  The exits are labelled north, 
+ * east, south, west.  For each direction, the room stores a reference
+ * to the neighboring room, or null if there is no exit in that direction.
  * 
  * @author  Michael Kölling and David J. Barnes
- * @version 2011.08.08
+ * @version 2011.07.31
  */
-
 public class Room 
 {
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
-    private Task roomTask;
-    private boolean roomLocked;
+    private Room northExit;
+    private Room southExit;
+    private Room eastExit;
+    private Room westExit;
+    
+   //string - the name of the exit
+   //Room - the room object
+   private HashMap<String, Room> exits;
+    
 
     /**
      * Create a room described "description". Initially, it has
@@ -28,100 +33,102 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description, Task roomTask) 
+    public Room(String description) 
     {
         this.description = description;
-        exits = new HashMap<String, Room>();
         
-        this.roomTask = roomTask;
-        //any room is unlocked when the game is set up
-        roomLocked = false;
+        //initialise the exits collections
+        exits = new HashMap<String, Room>();
     }
 
+    
+    
     /**
-     * Define an exit from this room.
-     * @param direction The direction of the exit.
-     * @param neighbor  The room to which the exit leads.
+     * Define the exits of this room.  Every direction either leads
+     * to another room or is null (no exit there).
+     * @param north The north exit.
+     * @param east The east east.
+     * @param south The south exit.
+     * @param west The west exit.
      */
-    public void setExit(String direction, Room neighbor) 
+    public void setExits(Room north, Room east, Room south, Room west) 
     {
-        exits.put(direction, neighbor);
+        if(north != null)
+            //northExit = north;
+            exits.put("north", north);
+        if(east != null)
+            //eastExit = east;
+            exits.put("east", east);
+        if(south != null)
+            //southExit = south;
+            exits.put("south", south);
+        if(west != null)
+            //westExit = west;
+            exits.put("west", west);
+            
+    }
+    
+    /**
+     * getExit 
+     * 
+     * @param String.  the specified direction
+     * @return Room.    Room Object
+     */
+    public Room getExit(String direction)
+    {
+        /*
+         * 
+         if (direction.equals("north")) {
+            return northExit;
+        }
+        if (direction.equals("south")) {
+            return southExit;
+        }
+        if (direction.equals("east")) {
+            return eastExit;
+        }
+        if (direction.equals("west")) {
+            return westExit;
+        }
+        */
+       
+       return exits.get(direction);
+       
+        //return null;
     }
 
     /**
-     * @return The short description of the room
-     * (the one that was defined in the constructor).
+     * @return The description of the room.
      */
-    public String getShortDescription()
+    public String getDescription()
     {
         return description;
     }
-
+    
     /**
-     * Return a description of the room in the form:
-     *     You are in the kitchen.
-     *     Exits: north west
-     * @return A long description of this room
+     * printLocation. Prints the location of the user
      */
-    public String getLongDescription()
+    public void printLocation()
     {
-        return "You are " + description + ".\n" + getExitString();
-    }
-
-    /**
-     * Return a string describing the room's exits, for example
-     * "Exits: north west".
-     * @return Details of the room's exits.
-     */
-    private String getExitString()
-    {
-        String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
-            returnString += " " + exit;
+        System.out.println("You are " + getDescription());
+        System.out.print("Exits: ");
+        if(northExit != null) {
+        //if(exits.get("north") != null) {
+            System.out.print("north ");
         }
-        return returnString;
+        if(eastExit != null) {
+        //if(exits.get("east") != null) {
+            System.out.print("east ");
+        }
+        if(southExit != null) {
+        //if(exits.get("south") != null) {
+            System.out.print("south ");
+        }
+        if(westExit != null) {
+        //if(exits.get("west") != null) {
+            System.out.print("west ");
+        }
+        System.out.println();
     }
 
-    /**
-     * Return the room that is reached if we go from this room in direction
-     * "direction". If there is no room in that direction, return null.
-     * @param direction The exit's direction.
-     * @return The room in the given direction.
-     */
-    public Room getExit(String direction) 
-    {
-        return exits.get(direction);
-    }
-    
-    /**
-     * getTask. Returns the Task object
-     * 
-     * @return Task roomTask
-     */
-    public Task getTask()
-    {
-        return roomTask;
-    }
-    
-    /**
-     * getRoomLocked. Get the value of the flag that says if the room is locked or not
-     * 
-     * @return boolean roomLocked
-     */
-    public boolean getRoomLocked()
-    {
-        return roomLocked;
-    }
-    
-    /**
-     * setRoomLocked. Sets the value of the flag that says if the room is locked or not
-     * 
-     * @param boolean roomLocked
-     */
-    public void setRoomLocked(boolean roomLocked)
-    {
-        this.roomLocked = roomLocked;
-    }
 }
-
